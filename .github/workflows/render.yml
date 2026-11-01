@@ -33,7 +33,11 @@ jobs:
                   have |= set(r.stdout.split())
           only = open('pipeline/trigger.txt').read().split('ONLY:')[-1].strip() if 'ONLY:' in open('pipeline/trigger.txt').read() else ''
           only = set(only.split(',')) if only else None
-          jobs = [j for j in json.load(open('pipeline/jobs.json')) if j['name'] + '.zip' not in have and (only is None or f"{j['kind']}_{j['n']}" in only)]
+          trig = open('pipeline/trigger.txt').read()
+          force = set(trig.split('FORCE:')[-1].split()[0].split(',')) if 'FORCE:' in trig else set()
+          if force: only = force
+          jobs = [j for j in json.load(open('pipeline/jobs.json')) if (j['name'] + '.zip' not in have or f"{j['kind']}_{j['n']}" in force) and (only is None or f"{j['kind']}_{j['n']}" in only)]
+          jobs.sort(key=lambda j: j['kind'] != 'short')
           print(json.dumps({'include': jobs}))
           EOF
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
