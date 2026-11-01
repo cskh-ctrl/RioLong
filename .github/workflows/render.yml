@@ -15,7 +15,7 @@ jobs:
     outputs:
       matrix: ${{ steps.m.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: m
         env:
           GH_TOKEN: ${{ github.token }}
@@ -28,7 +28,7 @@ jobs:
           for tag, name in groups:
               r = subprocess.run(['gh', 'release', 'view', tag, '--json', 'assets', '-q', '.assets[].name'], capture_output=True, text=True)
               if r.returncode != 0:
-                  subprocess.run(['gh', 'release', 'create', tag, '--title', name, '--notes', f'Thu muc {name}: moi file zip la 1 video (MP4, giong doc, phu de, kich ban, anh bia, thong tin dang YouTube).'], check=True)
+                  subprocess.run(['gh', 'release', 'create', tag, '--title', name, '--notes', f'Thu muc {name}: moi file zip la 1 video (MP4, giong doc, phu de, kich ban, anh bia, thong tin dang YouTube).'], check=True, capture_output=True)
               else:
                   have |= set(r.stdout.split())
           only = open('pipeline/trigger.txt').read().split('ONLY:')[-1].strip() if 'ONLY:' in open('pipeline/trigger.txt').read() else ''
@@ -50,10 +50,10 @@ jobs:
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     name: ${{ matrix.group }} / ${{ matrix.name }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 20 }
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with: { python-version: '3.11' }
       - name: System packages
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
