@@ -273,7 +273,9 @@ def plan_shots(item, kind, sents, words, cast):
         if tpl == "title" or (vertical and i == 0): p["title"] = title
         if vertical and i == 0: p["hook"] = True
         if tpl == "compare":
-            p["you"] = num[0] + (" " + num[1] if num and num[1] and num[1] != "%" else ("%" if num and num[1] == "%" else "")) if num else ""
+            val = (num[0] + ("%" if num[1] == "%" else (" " + num[1] if num[1] else ""))) if num else ""
+            # the number in an "average person" sentence describes the average, not Rio
+            p["avg"] = val; p["you"] = ""
         # split long sentences into 2-3 shots so a cut happens every ~2-4 s
         st, en = s["start"], s["end"]
         nxt = sents[i + 1]["start"] if i + 1 < n else en + 0.8

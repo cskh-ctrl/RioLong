@@ -165,7 +165,7 @@ function compare(g, t, info) {
     const w = Math.max(52, (x1 - x0) * frac); rr(g, x0, y - 26, w, 52, 26); g.fillStyle = c; g.fill(); glow(g, x0 + w, y, 60, c, 0.5);
     if (val) text(g, val, Math.min(x0 + w + 24, x1 - 200), y + 66, { size: V(48, 52), color: c, font: FONTS.ui, weight: 900, align: 'left', alpha: clamp(frac * 4) });
   };
-  row(rows[0], 'AVERAGE PERSON', '', 0.3 * ease.inOut(prog(t, 0.2, 1.2)), col, POSES.stand);
+  row(rows[0], 'AVERAGE PERSON', info.avg || '', 0.3 * ease.inOut(prog(t, 0.2, 1.2)), col, POSES.stand);
   row(rows[1], 'YOU (RIO)', info.you || '', 0.95 * ease.out(prog(t, 0.8, 1.8)), ui.gold, POSES.cheer);
 }
 
