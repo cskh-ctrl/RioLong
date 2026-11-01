@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   plan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.m.outputs.matrix }}
     steps:
@@ -46,7 +46,7 @@ jobs:
   render:
     needs: plan
     if: ${{ fromJson(needs.plan.outputs.matrix).include[0] != null }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 350
     strategy:
       fail-fast: false
